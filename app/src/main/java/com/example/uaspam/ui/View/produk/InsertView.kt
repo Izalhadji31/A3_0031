@@ -155,15 +155,6 @@ fun FormInput(
                 enabled = enabled,
                 singleLine = true
             )
-        }
-
-        // Kolom kedua
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(2.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
             OutlinedTextField(
                 value = insertUiEvent.stok?.toString() ?: "",
                 onValueChange = { onValueChange(insertUiEvent.copy(stok = it.toIntOrNull())) },
