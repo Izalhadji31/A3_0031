@@ -56,8 +56,10 @@ fun EntrypmskScreen(
             onValueChange = viewModel::updateInsertpmskState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertpmsk()
-                    navigateBack()
+                    if (viewModel.validatePemasokData()) { // Validasi sebelum insert
+                        viewModel.insertpmsk()
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
