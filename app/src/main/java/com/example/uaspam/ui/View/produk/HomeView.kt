@@ -92,20 +92,20 @@ fun HomeScreen(
                 onClick = onNavigateToPemasok,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             ) {
-                Text("Go to Pemasok Page")
+                Text("PEMASOK")
             }
             // Tambahkan Button untuk navigasi ke Kategori
             Button(
                 onClick = onNavigateToKategori,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             ) {
-                Text("Go to Kategori Page")
+                Text("KATEGORI")
             }
             Button(
                 onClick = onNavigateToMerk,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             ) {
-                Text("Go to Merk Page")
+                Text("MERK")
             }
 
             // Konten HomeStatus
