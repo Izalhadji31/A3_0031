@@ -16,13 +16,11 @@ import com.example.uaspam.repository.ProdukRepository
 import kotlinx.coroutines.launch
 
 class InsertProdukViewModel(
-
     private val prdk: ProdukRepository,
     private val pmsk: PemasokRepository,
     private val ktgr: KategoriRepository,
     private val mrk: MerkRepository,
-
-    ): ViewModel() {
+) : ViewModel() {
     var uiState by mutableStateOf(InsertUiState())
         private set
 
@@ -30,39 +28,82 @@ class InsertProdukViewModel(
     var ktgrList by mutableStateOf<List<Kategori>>(emptyList())
     var mrkList by mutableStateOf<List<Merk>>(emptyList())
 
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
 
     init {
-        //memuat data
-        simpandata()
+        loadData()
     }
 
-    private fun simpandata() {
+    private fun loadData() {
         viewModelScope.launch {
             try {
                 pmskList = pmsk.getpemasok().data
                 ktgrList = ktgr.getkategori().data
                 mrkList = mrk.getmerk().data
             } catch (e: Exception) {
-
+                errorMessage = "Gagal memuat data."
             }
         }
     }
 
-    fun updateInsertprdkState(insertUiEvent: InsertUiEvent){
+    fun updateInsertprdkState(insertUiEvent: InsertUiEvent) {
         uiState = InsertUiState(insertUiEvent)
     }
 
+    fun validate(): Boolean {
+        val event = uiState.insertUiEvent
+        return when {
+            event.nama_produk.isBlank() -> {
+                errorMessage = "Nama produk tidak boleh kosong."
+                false
+            }
+            event.deskripsi_produk.isBlank() -> {
+                errorMessage = "Deskripsi produk tidak boleh kosong."
+                false
+            }
+            event.harga == null || event.harga <= 0 -> {
+                errorMessage = "Harga harus lebih dari 0."
+                false
+            }
+            event.stok == null || event.stok < 0 -> {
+                errorMessage = "Stok tidak boleh kurang dari 0."
+                false
+            }
+            event.id_kategori == null || event.id_kategori <= 0 -> {
+                errorMessage = "Pilih kategori yang valid."
+                false
+            }
+            event.id_pemasok == null || event.id_pemasok <= 0 -> {
+                errorMessage = "Pilih pemasok yang valid."
+                false
+            }
+            event.id_merk == null || event.id_merk <= 0 -> {
+                errorMessage = "Pilih merek yang valid."
+                false
+            }
+            else -> {
+                errorMessage = null
+                true
+            }
+        }
+    }
 
-    suspend fun insertprdk(){
-        viewModelScope.launch {
-            try {
-                prdk.insertproduk(uiState.insertUiEvent.toprdk())
-            }catch (e: Exception){
-                e.printStackTrace()
+    fun insertprdk() {
+        if (validate()) {
+            viewModelScope.launch {
+                try {
+                    prdk.insertproduk(uiState.insertUiEvent.toprdk())
+                    errorMessage = null
+                } catch (e: Exception) {
+                    errorMessage = "Gagal menyimpan produk."
+                    e.printStackTrace()
+                }
             }
         }
     }
 }
+
 
 fun InsertUiEvent.toprdk(): Produk = Produk(
     id_produk = id_produk ?: 0,
