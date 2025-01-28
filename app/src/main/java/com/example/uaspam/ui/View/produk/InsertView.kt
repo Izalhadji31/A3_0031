@@ -62,8 +62,10 @@ fun EntryprdkScreen(
             mrkList = viewModel.mrkList,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertprdk()
-                    navigateBack()
+                    if (viewModel.validate()) { // Validasi sebelum insert
+                        viewModel.insertprdk()
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
