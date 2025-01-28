@@ -55,8 +55,10 @@ fun EntrymrkScreen(
             onValueChange = viewModel::updateInsertmrkState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertmrk()
-                    navigateBack()
+                    if (viewModel.validateMerkData()) { // Validasi sebelum insert
+                        viewModel.insertmrk()
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
