@@ -159,7 +159,7 @@ fun OnLoading(
     modifier: Modifier = Modifier
 ) {
     Image(
-        modifier = modifier.size(200.dp),
+        modifier = modifier.size(20.dp),
         painter = painterResource(R.drawable.loadd),
         contentDescription = stringResource(R.string.loading)
     )
@@ -179,7 +179,7 @@ fun OnError(
             painter = painterResource(id = R.drawable.images), contentDescription = ""
         )
         Text(
-            text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp)
+            text = stringResource(R.string.loading_failed), modifier = Modifier.padding(20.dp)
         )
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
