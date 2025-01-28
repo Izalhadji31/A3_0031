@@ -55,8 +55,10 @@ fun EntryktgrScreen(
             onValueChange = viewModel::updateInsertktgrState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertktgr()
-                    navigateBack()
+                    if (viewModel.validate()) { // Validasi sebelum insert
+                        viewModel.insertktgr()
+                        navigateBack()
+                    }
                 }
             },
             modifier = Modifier
